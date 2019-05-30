@@ -35,6 +35,16 @@ int karatsuba(int lhs, int rhs){
 	return finalProduct;
 };
 
+//111*111
+//N=3 M=2 XL=11 XH=1 YL=11 YH=1
+//a=XH*YH = 1 *1 = 1
+//d=XL*YL = 11 * 11 = 121
+//e=(XH+XL)*(YH+YL) - a -d = 12 * 12 - 1 - 121 = 22
+//X*Y=a*10^N + e*10^(N/2) + d = 1000 + 100 * 22 + 121 = 3321 
+
+
+
+
 int main() {
 	cout << "7*6 = " << karatsuba(7,6) << endl; //42
 	cout << "15*15 = " << karatsuba(15,15) << endl; //225
