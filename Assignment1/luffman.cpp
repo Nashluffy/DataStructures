@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+
 using namespace std;
 
 int numLength(int num){
@@ -29,7 +30,7 @@ int karatsuba(int lhs, int rhs){
 		eMultiplication = karatsuba((lhsHigh + lhsLow),(rhsHigh + rhsLow));
 		e = eMultiplication - a - d;
 		
-		finalProduct = a*int(pow(double(10),double(n))) + e*int(pow(double(10),m)) + d; 
+		finalProduct = a*int(pow(double(10),karatsuba(2,m))) + e*int(pow(double(10),m)) + d; 
 
 	}
 	return finalProduct;
