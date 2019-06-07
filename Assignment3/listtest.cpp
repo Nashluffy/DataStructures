@@ -35,6 +35,20 @@ int main()
    {
       cout << pos.get() << endl;
    }
+   cout << endl;
+   List names_copy(names); //Copy constructor - homework
+   names_copy.push_back("Shakespeare");
+   // Verify that Shakespeare was inserted. 
+   cout << "Printing new list" << endl;
+   for (pos = names_copy.begin(); !pos.equals(names.end()); pos.next())
+   {
+      cout << pos.get() << endl; // 
+   }
+   cout << "Printing original list " << endl;
+   for (pos = names.begin(); !pos.equals(names.end()); pos.next())
+   {
+      cout << pos.get() << endl;
+   }
 
    return 0;
 }

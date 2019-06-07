@@ -1,5 +1,7 @@
 #include <string>
 #include "list.h"
+#include <iostream>
+
 
 using namespace std;
 
@@ -16,9 +18,13 @@ List::List()
    last = nullptr;
 }
 
-List::List(const List& oldList){
-    
-
+List::List(List& oldList){
+   List newList;
+   Iterator oldIt = oldList.end(); 
+   while (oldIt.position != nullptr){
+	newList.push_back(oldIt.get());
+	oldIt.next();
+   }
 }
 
 void List::push_back(string element)
@@ -30,7 +36,7 @@ void List::push_back(string element)
       last = new_node;
    }
    else
-   {  
+   { 
       new_node->previous = last;
       last->next = new_node;
       last = new_node;
