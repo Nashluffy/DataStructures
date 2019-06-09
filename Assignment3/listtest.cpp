@@ -40,7 +40,7 @@ int main()
    names_copy.push_back("Shakespeare");
    // Verify that Shakespeare was inserted. 
    cout << "Printing new list" << endl;
-   for (pos = names_copy.begin(); !pos.equals(names_copy.end()); pos.next())
+   for (pos = names_copy.begin(); !pos.equals(names.end()); pos.next())
    {
       cout << pos.get() << endl; // 
    }
