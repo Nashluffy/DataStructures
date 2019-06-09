@@ -31,7 +31,7 @@ public:
       Constructs an empty list.
    */
    List();
-   List(List&); //Copy constructor 
+   List(List &oldList); //Copy constructor 
    /**
       Appends an element to the list.
       @param element the value to append

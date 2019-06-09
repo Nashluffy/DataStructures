@@ -18,13 +18,14 @@ List::List()
    last = nullptr;
 }
 
-List::List(List& oldList){
-   List newList;
-   Iterator oldIt = oldList.end(); 
-   while (oldIt.position != nullptr){
-	newList.push_back(oldIt.get());
-	oldIt.next();
-   }
+List::List(List &oldList){
+  Iterator oldIt = oldList.begin();
+  first = nullptr;
+  last = nullptr;
+  while (oldIt.position != nullptr){
+	  push_back(oldIt.get());
+	  oldIt.next();
+  }
 }
 
 void List::push_back(string element)
@@ -126,6 +127,7 @@ void Iterator::next()
 {  
    position = position->next;
 }
+
 
 void Iterator::previous()
 {  
