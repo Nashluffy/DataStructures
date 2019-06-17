@@ -20,8 +20,6 @@
 //Goal is to implement in linear (O(n)) time for z, O(nlogn) overall
 
 //Have recursive calls both count inversions and sort. Merge subroutine naturally uncovers split inversions
-
-
 /* Test cases - 1) Random array mixed positive and negative numbers 2) Sorted array 3) Reverse sorted array 4) Custom input */
 #include <iostream>
 #include <vector>
@@ -71,14 +69,14 @@ int main(int argc, char **argv)
         default:
                 cout << "Invalid input" << endl;
                 return -1;
-        
+
     }
-    
+
     // Print vector
     for (it = my_vec.begin(); it !=  my_vec.end(); ++it)
         cout << *it << " ";
     cout << endl << endl;
-    
+
     vector<int> sort_vec(my_vec);
     cout << "Number of inversions " << countInv(my_vec, sort_vec, 0, my_vec.size()) << endl;
 
@@ -92,9 +90,9 @@ int merge(vector<int> &in_vec, vector<int>  &out_vec, int begin, int mid, int en
 	//All we need to do here (famous last words) is compare 1. element order and 2. element value
 	//If element 1 > element 2
 		//Copy element 2 from input vector to output vector
-		//Increase inversion count by 1
+		//Increase inversion count by mid - leftIter because if right is sorted then all numbers to right of leftIter are split inversions
 		//Increase rightIter and outIter by 1
-	//else 
+	//else
 		//Copy element 1 into output vector
 		//Increase leftIter and outIter by 1
 	//update input vector to reflect sorted changes (or else we would be merging unsorted vectors later!)
@@ -111,7 +109,7 @@ int merge(vector<int> &in_vec, vector<int>  &out_vec, int begin, int mid, int en
 		}
 		else{
 			out_vec.at(outIter++) = in_vec.at(leftIter++);
-			
+
 		}
 	}
 	//Since we have copied original vector, we need to catch the instance where right left side doesn't have a chance to finish. If this case is reached, the right side is already sorted. I didn't catch this in my pseudocode
@@ -140,14 +138,14 @@ int countInv(vector<int> &in_vec, vector<int> &out_vec, int begin, int end) {
  //return currentCount And return the overall count
  //
  int currentCount = 0, mid;
- mid = (begin + end)/2; 
+ mid = (begin + end)/2;
 
  if (end == in_vec.size()){ //Catch the case of end == size of vector, this would throw errors on bounds checking (see vector.at())
 	 end = end - 1;
  }
 
  if (end > begin){
- 	currentCount = countInv(in_vec, out_vec, begin, mid); 
+ 	currentCount = countInv(in_vec, out_vec, begin, mid);
 	currentCount += countInv(in_vec, out_vec, mid + 1, end);
 	currentCount += merge(in_vec, out_vec, begin, mid, end); //Base case
  }
