@@ -88,8 +88,64 @@ int main(int argc, char **argv)
     cout << endl;
 }
 
+int merge(vector<int> &in_vec, vector<int>  &out_vec, int begin, int mid, int end){
+	//All we need to do here (famous last words) is compare 1. element order and 2. element value
+	//If element 1 > element 2
+		//Copy element 2 from input vector to output vector
+		//Increase inversion count by 1
+	//else 
+	int invCount = 0;
+	int leftIter, rightIter, outIter;
+	outIter = begin;
+	leftIter = begin;
+	rightIter = mid + 1;
+	while (leftIter <= mid && rightIter <= end){
+		if (in_vec.at(leftIter) <= in_vec.at(rightIter)){
+			out_vec.at(outIter++) = in_vec.at(leftIter++);
+		}
+		else{
+			out_vec.at(outIter++) = in_vec.at(rightIter++);
+			invCount = invCount +  (mid - leftIter + 1);
+		}
+	}
+	//Since we have copied original vector, we need to catch the instance where right left side doesn't have a chance to finish. If this case is reached, the right side is already sorted.
+	while (leftIter <= mid){
+		out_vec.at(outIter++) = in_vec.at(leftIter++);
+	}
+
+	//Copy the changes back over to the original vector
+	//This is important or else we would be merging unsorted vectors later in the program 
+	for (int i = begin; i <= end; i++){
+		in_vec.at(i) = out_vec.at(i);
+	}
+
+	return invCount;
+}
+
 int countInv(vector<int> &in_vec, vector<int> &out_vec, int begin, int end) {
 
- // Your code goes here
+ //Need to count number of left, right, and split inversions
+ //Divide and conquer until it's two elements
+ //Base case would be two elements
+ //int count = 0, midPoint;
+ //if at least two elements in in_vec
+ 	//count = countInv(in_vec, out_vec, begin, mid) This will split and merge left half
+ 	//count += countInv(in_vec,out_vec,mid + 1, end) This will split and merge right half
+ 	//count += merge(in_vec,out_vec,begin, end) This will merge the two halves
 
+ //return currentCount And return the overall count
+ //
+ int currentCount = 0, mid;
+ mid = (begin + end)/2; 
+
+ if (end == in_vec.size()){
+	 end = end - 1;
+ }
+
+ if (end > begin){
+ 	currentCount = countInv(in_vec, out_vec, begin, mid); 
+	currentCount += countInv(in_vec, out_vec, mid + 1, end);
+	currentCount += merge(in_vec, out_vec, begin, mid, end); //Base case
+ }
+ return currentCount;
 }
