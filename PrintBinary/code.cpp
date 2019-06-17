@@ -3,24 +3,20 @@
 
 using namespace std;
 
-string printBinary(int input, string output){
-    output = "1";
-    if(input/2 >= 1){			
-        output = printBinary(input/2, output);		
-	if(input%2 > 0){		
-            output = "1" + output;
-	}
-	else{
-	    output = "0" + output;
-	}
+void printBinary(int input){
+    if (input > 1){
+	    printBinary(input/2);
     }
-    return output;
+    cout << input%2;
 }
 
 int main(){
-    string output;
-    cout << printBinary(2,output) << endl;
-    cout << printBinary(3,output) << endl;
-    cout << printBinary(15,output) << endl;
-    cout << printBinary(46,output) << endl;
+    printBinary(2);
+    cout << endl;
+    printBinary(3);
+    cout << endl;
+    printBinary(15);
+    cout << endl;
+    printBinary(46);
+    cout << endl;
 }
