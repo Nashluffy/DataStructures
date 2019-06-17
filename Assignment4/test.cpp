@@ -93,28 +93,32 @@ int merge(vector<int> &in_vec, vector<int>  &out_vec, int begin, int mid, int en
 	//If element 1 > element 2
 		//Copy element 2 from input vector to output vector
 		//Increase inversion count by 1
+		//Increase rightIter and outIter by 1
 	//else 
+		//Copy element 1 into output vector
+		//Increase leftIter and outIter by 1
+	//update input vector to reflect sorted changes (or else we would be merging unsorted vectors later!)
+	//return invCount
 	int invCount = 0;
 	int leftIter, rightIter, outIter;
 	outIter = begin;
 	leftIter = begin;
 	rightIter = mid + 1;
 	while (leftIter <= mid && rightIter <= end){
-		if (in_vec.at(leftIter) <= in_vec.at(rightIter)){
-			out_vec.at(outIter++) = in_vec.at(leftIter++);
+		if (in_vec.at(leftIter) > in_vec.at(rightIter)){
+			out_vec.at(outIter++) = in_vec.at(rightIter++);
+			invCount = invCount + (mid - leftIter + 1);
 		}
 		else{
-			out_vec.at(outIter++) = in_vec.at(rightIter++);
-			invCount = invCount +  (mid - leftIter + 1);
+			out_vec.at(outIter++) = in_vec.at(leftIter++);
+			
 		}
 	}
-	//Since we have copied original vector, we need to catch the instance where right left side doesn't have a chance to finish. If this case is reached, the right side is already sorted.
+	//Since we have copied original vector, we need to catch the instance where right left side doesn't have a chance to finish. If this case is reached, the right side is already sorted. I didn't catch this in my pseudocode
 	while (leftIter <= mid){
 		out_vec.at(outIter++) = in_vec.at(leftIter++);
 	}
 
-	//Copy the changes back over to the original vector
-	//This is important or else we would be merging unsorted vectors later in the program 
 	for (int i = begin; i <= end; i++){
 		in_vec.at(i) = out_vec.at(i);
 	}
@@ -138,7 +142,7 @@ int countInv(vector<int> &in_vec, vector<int> &out_vec, int begin, int end) {
  int currentCount = 0, mid;
  mid = (begin + end)/2; 
 
- if (end == in_vec.size()){
+ if (end == in_vec.size()){ //Catch the case of end == size of vector, this would throw errors on bounds checking (see vector.at())
 	 end = end - 1;
  }
 
