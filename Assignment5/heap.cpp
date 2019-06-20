@@ -75,13 +75,13 @@ else{
   h_high.push(num);
 }
 if (h_low.size()%2 != 0){
-  return median = h_low.top();
+  median = h_low.top();
 }
 else if (h_high.size()%2 != 0){
-  return median = h_high.top();
+  median = h_high.top();
 }
 else{
-  return median = h_low.top() + h_high.top() / 2 ;
+  median = h_low.top() + h_high.top() / 2 ;
 }
-
+return median;
 }
