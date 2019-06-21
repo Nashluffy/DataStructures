@@ -82,17 +82,20 @@ int calcMedian(priority_queue<int, vector<int>, greater<int>>& h_high, priority_
   int median;
   if ((h_low.size() + h_high.size() )== 0){
     median = 0;
+    return median;
   }
   if (h_low.size()%2 != 0){
     median = h_low.top();
+    return median;
   }
   else if (h_high.size()%2 != 0){
     median = h_high.top();
+    return median;
   }
   else{
     median = h_low.top() + h_high.top() / 2 ;
+    return median;
   }
-  return median;
 }
 
 int find_median(priority_queue<int, vector<int>, greater<int>>& h_high, priority_queue<int>& h_low, int num) {
