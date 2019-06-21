@@ -10,37 +10,49 @@
 //If there is an even number of terms, the median is the average of the two middle names
 
 //Pseudocode
-//Median is the max of min heap and max
 // 1 2 3 4 5 6 7 8 9 10
 // 5 + 6 / 2  = = 5.5
 //Lower half stored in minHeap -> 1 2 3 4 5
 //Upper half stored in maxHeap -> 6 7 8 9 10
 //Median would be minHeap.top() + maxHeap.min() / 2
 
-//Insert a new element, 11, and calculate the Median
+//Need to be able to insert elements and keep heaps balanced
+//Since we aren't passing the median in, we have to calculate it each time
+//We have a couple different cases,
 
-//Find median element before insert
-      //If (minHeap.size()%2 == 0)
-        //return median = minHeap.top()
-      //Else If (maxHeap.size()%2 == 0)
-        //return median = maxHeap.top()
-      //Else
-        //return median = minHeap.top() + maxHeap.top() / 2
+  //Nothing in either heap (first insert)
+    //Goal here is to make heaps unbalanced
+    //When we come around to the second element, we will hit unbalanced case which will save us from segfault
+    //Doesn't really matter which heap we insert into, rest of the code should fix it
 
-//Insert new element based on median
+  //Heaps equal size
+    //median = maxHeap.top + minHeap.top / 2
+    //if num > Median
+      //insert into maxHeap
+      //median = maxHeap.top
+    //else
+      //insert into minHeap
+      //median = minHeap.top
 
-    //If medianEle <= newElement
-        // minHeap.insert(newElement)
-    //If medianEle >= newElement
-        //maxHeap.insert(newElement)
+  //minHeap > maxHeap
+    //if num > median
+      //maxHeap.push(num)
+      //median = maxHeap.top + minHeap.top /2
+    //else
+      //maxHop.push(minHeap.top)
+      //minHeap.pop
+      //minHeap.push(num)
+      //median = maxHeap.top + minHeap.top /2
 
-//Calculate new median
-    //If (minHeap.size()%2 == 0)
-      //return median = minHeap.top()
-    //Else If (maxHeap.size()%2 == 0)
-      //return median = maxHeap.top()
-    //Else
-      //return median = minHeap.top() + maxHeap.top() / 2
+  //maxHeap > minHeap
+    //if num > Median
+      //maxHop.push(minHeap.top)
+      //minHeap.pop
+      //minHeap.push(num)
+      //median = maxHeap.top + minHeap.top /2
+    //else
+      //minHeap.push(num)
+      //median = maxHeap.top + minHeap.top /2
 
 #include <iostream>
 #include <queue>
@@ -78,38 +90,59 @@ void print_queue(T& q) {
     std::cout << '\n';
 }
 
-int calcMedian(priority_queue<int, vector<int>, greater<int>>& h_high, priority_queue<int>& h_low, int num){
+int find_median(priority_queue<int, vector<int>, greater<int>>& h_high, priority_queue<int>& h_low, int num) {
   int median;
+
+  //Nothing in either heap (first insert)
   if ((h_low.size() + h_high.size() )== 0){
-    median = 0;
-    return median;
-  }
-  if (h_low.size()%2 != 0){
+    h_low.push(num);
     median = h_low.top();
     return median;
   }
-  else if (h_high.size()%2 != 0){
+
+  //Heaps equal size
+  if (h_low.size() == h_high.size()){
+    median = (h_low.top() + h_high.top()) / 2 ;
+    if (num > median){
+      h_high.push(num);
+      median = h_high.top();
+    }
+    else{
+      h_low.push(num);
+      median = h_low.top();
+    }
+    return median;
+  }
+
+  //minHeap > maxHeap
+  if (h_low.size() > h_high.size()){
+    median = h_low.top();
+    if(num > median){
+      h_high.push(num);
+    }
+    else{
+      h_high.push(h_low.top());
+      h_low.pop();
+      h_low.push(num);
+    }
+    median = (h_low.top() + h_high.top()) / 2 ;
+    return median;
+  }
+
+  //maxHeap > minHeap
+  if (h_high.size() > h_low.size()){
     median = h_high.top();
+    if(num > median){
+      h_low.push(h_high.top());
+      h_high.pop();
+      h_high.push(num);
+    }
+    else{
+      h_low.push(num);
+    }
+    median = (h_low.top() + h_high.top()) / 2 ;
     return median;
   }
-  else{
-    median = h_low.top() + h_high.top() / 2 ;
-    return median;
-  }
-}
 
-int find_median(priority_queue<int, vector<int>, greater<int>>& h_high, priority_queue<int>& h_low, int num) {
-int median;
-median = calcMedian(h_high, h_low, num);
 
-if(median <= num){
-  h_low.push(num);
-}
-if(median >= num){
-  h_high.push(num);
-}
-
-median = calcMedian(h_high, h_low, num);
-
-return median;
 }
