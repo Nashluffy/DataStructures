@@ -24,8 +24,9 @@ vector<vector<string>> findAnagrams(const vector<string>& dict)
 {
 vector<vector<string>> output;
 unordered_map<string, int> hashT;
+int i = 1;
 for (auto it:dict){
-  hashT.emplace(it);
+  hashT.insert(make_pair(it, i++));
 }
 return output;
 }
