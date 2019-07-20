@@ -22,7 +22,7 @@
 using namespace std;
 
 void heapSort(vector<int> &input){
-    priority_queue<int, vector<int>, greater<int> > minHeap;
+    priority_queue<int, vector<int>, greater<int>> minHeap;
     
     for (auto it:input){
         minHeap.push(it);
