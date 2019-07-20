@@ -27,15 +27,16 @@ int main() {
     ifstream ifs("sample_edges.txt");
     adjlist alist = makeGraph(ifs);
     printGraph(alist);
-    vector<int> dfslist = DFS(alist, 3);
+    vector<int> dfslist = DFS(alist, 0);
     for (auto& ele : dfslist){
         cout << ele;
         cout << endl;
     }
-    //vector<int> bfslist = BFS(alist, 0);
-    //for (auto& ele : bfslist)
-    //    cout << ele;
-    //cout << endl;
+    vector<int> bfslist = BFS(alist, 0);
+    for (auto& ele : bfslist){
+        cout << ele;
+        cout << endl;
+      }
 }
 // Reads a csv graph from file and returns an adjacency list
 adjlist makeGraph(ifstream& ifs) {
@@ -98,7 +99,9 @@ vector<int> DFS(const adjlist& alist, int source) {
     for (auto it:alist){
       visitedNodes.push_back(false);
     }
+    visitedNodes.at(source) = true;
     dfslist.push_back(source);
+    //visitedNodes.at(source) = true;
     for (auto it:alist.at(source)){
       dfslist.push_back(it.first);
       DFSHelper(alist, dfslist, visitedNodes, it.first);
@@ -109,7 +112,6 @@ vector<int> DFS(const adjlist& alist, int source) {
 //
 //Start with a source, mark source as visited, iterate through alist and recurse on neighbors
 void DFSHelper(const adjlist& alist, vector<int>& dfslist, vector<bool>& visited,int source) {
-    queue<int> adjVertices;
     visited.at(source) = true;
     for (auto it:alist.at(source)){
       if (visited.at(it.first) != true) {
@@ -119,6 +121,30 @@ void DFSHelper(const adjlist& alist, vector<int>& dfslist, vector<bool>& visited
     }
 }
 // BFS - returns list of nodes in BFS order starting from source vertex
+//BFS - we print first two encountered, then recurse
+//Put first neighbors of source into a queue
+//Print them out while queue is not empty
+//Mark them as visited and put their neighbors in the queue if not visited yet
 vector<int> BFS(const adjlist& alist, int source) {
-// Your code here
+  queue<int> BFSQueue;
+  vector<bool> visitedNodes;
+  vector<int> bfslist;
+  for (auto it:alist){
+    visitedNodes.push_back(false);
+  }
+  visitedNodes.at(source) = true;
+  BFSQueue.push(source);
+  while(!BFSQueue.empty()){
+    bfslist.push_back(BFSQueue.front());
+    for (auto it:alist.at(BFSQueue.front())){
+      if (visitedNodes.at(it.first) != true){
+        BFSQueue.push(it.first);
+        visitedNodes.at(it.first) = true;
+      }
+    }
+    BFSQueue.pop();
+  }
+  visitedNodes.at(source) = true;
+
+  return bfslist;
 }
